@@ -4,9 +4,6 @@ var ImageOption = function(name, tally, fileName) {
   this.tally = 0;
   this.fileName = name +".jpg";
 };
-// var imageNumberOne = document.getElementById("imageOne");
-// var imageNumberTwo = document.getElementById("imageTwo");
-// var imageNumberThree = document.getElementById("imageThree");
 
 imageNames = [];
 imageNames.push(new ImageOption("bag"));
@@ -37,18 +34,18 @@ function addImage(imageObject, index) {
 
 //shows images randomly
 function showImages() {
-  var index = Math.floor(Math.random() * 14)
+  var index = Math.floor(Math.random() * 14);
   addImage("images/" +imageNames[index].fileName,index);
 
-  var indexTwo = Math.floor(Math.random() * 14)
+  var indexTwo = Math.floor(Math.random() * 14);
   while (index == indexTwo) {
     indexTwo = Math.floor(Math.random() * 14)
   }
   addImage("images/" +imageNames[indexTwo].fileName,indexTwo);
 
-  var indexThree = Math.floor(Math.random() * 14)
+  var indexThree = Math.floor(Math.random() * 14);
   while (indexTwo == indexThree || index == indexThree) {
-    indexThree = Math.floor(Math.random() * 14)
+    indexThree = Math.floor(Math.random() * 14);
   }
   addImage("images/" +imageNames[indexThree].fileName,indexThree);
 }
@@ -56,10 +53,17 @@ function showImages() {
 //recording click
 function recordClick(event) {
   var imageSource = event.target.src;
-  console.log("Image Clicked!" +imageSource);
-  imageNames[event.target.dataset.index].tally++;
-  console.log(imageNames[event.target.dataset.index]);
+  for (var index = 0; index < imageNames.length; index++){
+    if (imageSource.indexOf(imageNames[index].imageSource) >=0) {
+      imageNames[index].tally++;
+    }
+  }
+   console.log("Image Clicked!" +imageSource);
+   console.log(imageNames[event.target.dataset.index]);
 }
+
+//checking number of votes and notifying after 15 clicks of score
+
 
 window.addEventListener("load", showImages);
 // window.addEventListener("load"),showChart);
