@@ -1,3 +1,14 @@
+/*#BBE1C3 (sea foam green)
+#A7CDBD (turquoise green)
+#869D7A (Artichoke)
+#91785D (Shadow)
+#8B5D33 (Coyote Brown)*/
+
+body {
+  background-color: #91785D;
+}
+
+
 h1, p {
   font-family: Arial;
   text-align: center;
@@ -9,7 +20,7 @@ h1, p {
 }
 
 #image-container img {
-  height: 250px;
+  height: 100%;
   width: 30%;
   border-style: solid;
   border-width: 2px;
