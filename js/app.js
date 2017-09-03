@@ -29,23 +29,24 @@ function addImage(imageObject, index) {
   image.dataset.index = index;
   //image.src = "images/" +imageObject.fileName;
   image.addEventListener("click", recordClick);
+  image.addEventListener("click", imageReload)
   container.appendChild(image);
 }
 
 //shows images randomly
 function showImages() {
-  var index = Math.floor(Math.random() * 14);
+  var index = Math.floor(Math.random() * imageNames.length);
   addImage("images/" +imageNames[index].fileName,index);
 
-  var indexTwo = Math.floor(Math.random() * 14);
+  var indexTwo = Math.floor(Math.random() * imageNames.length);
   while (index == indexTwo) {
-    indexTwo = Math.floor(Math.random() * 14)
+    indexTwo = Math.floor(Math.random() * imageNames.length)
   }
   addImage("images/" +imageNames[indexTwo].fileName,indexTwo);
 
-  var indexThree = Math.floor(Math.random() * 14);
+  var indexThree = Math.floor(Math.random() * imageNames.length);
   while (indexTwo == indexThree || index == indexThree) {
-    indexThree = Math.floor(Math.random() * 14);
+    indexThree = Math.floor(Math.random() * imageNames.length);
   }
   addImage("images/" +imageNames[indexThree].fileName,indexThree);
 }
@@ -63,7 +64,17 @@ function recordClick(event) {
 }
 
 //checking number of votes and notifying after 15 clicks of score
-
+function imageReload() {
+  setLimit (function) {
+    if (reloadCounter < imageNames.length) {
+      showImages();
+      reloadCounter++;
+    } else {
+      document.getElementById("image-container").innerHTML = "";
+      document.getElementById()
+    }
+  }
+}
 
 window.addEventListener("load", showImages);
 // window.addEventListener("load"),showChart);
