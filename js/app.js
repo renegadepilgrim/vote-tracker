@@ -1,80 +1,89 @@
 //constructor
-var ImageOption = function(name, tally, fileName) {
-  this.name = name;
-  this.tally = 0;
-  this.fileName = name +".jpg";
+var ImageOption = function(fileName, source) {
+  this.source = source;
+  this.y = 0;
+  this.label = fileName;
+  this.voteCounter = function() {
+    this.y++;
+  }
 };
 
 imageNames = [];
-imageNames.push(new ImageOption("bag"));
-imageNames.push(new ImageOption("banana"));
-imageNames.push(new ImageOption("boots"));
-imageNames.push(new ImageOption("chair"));
-imageNames.push(new ImageOption("cthulhu"));
-imageNames.push(new ImageOption("dragon"));
-imageNames.push(new ImageOption("pen"));
-imageNames.push(new ImageOption("scissors"));
-imageNames.push(new ImageOption("shark"));
-imageNames.push(new ImageOption("sweep"));
-imageNames.push(new ImageOption("unicorn"));
-imageNames.push(new ImageOption("usb"));
-imageNames.push(new ImageOption("water_can"));
-imageNames.push(new ImageOption("wine_glass"));
+imageNames.push(new ImageOption("Bag", "bag.jpg"));
+imageNames.push(new ImageOption("Banana", "banana.jpg"));
+imageNames.push(new ImageOption("Boots", "boots.jpg"));
+imageNames.push(new ImageOption("Chair", "chair.jpg"));
+imageNames.push(new ImageOption("Cthulhu", "cthulhu.jpg"));
+imageNames.push(new ImageOption("Dragon", "dragon.jpg"));
+imageNames.push(new ImageOption("Pen", "pen.jpg"));
+imageNames.push(new ImageOption("Scissors", "scissors.jpg"));
+imageNames.push(new ImageOption("Shark", "shark.jpg"));
+imageNames.push(new ImageOption("Sweep", "sweep.jpg"));
+imageNames.push(new ImageOption("Unicorn", "unicorn.jpg"));
+imageNames.push(new ImageOption("Usb", "usb.jpg"));
+imageNames.push(new ImageOption("Water Can", "water_can.jpg"));
+imageNames.push(new ImageOption("Wine Glass", "wine_glass.jpg"));
 
 //adds image
-function addImage(imageObject, index) {
- var container = document.getElementById("image-container");
- var image = document.createElement("img");
-  image.src = imageObject;
-  image.dataset.index = index;
-  //image.src = "images/" +imageObject.fileName;
+function addImage(imageObject) {
+  var container = document.getElementById("image-container");
+  var image = document.createElement("img");
+  image.src = "images/" + imageObject.source;
   image.addEventListener("click", recordClick);
-  image.addEventListener("click", imageReload)
   container.appendChild(image);
 }
 
 //shows images randomly
 function showImages() {
   var index = Math.floor(Math.random() * imageNames.length);
-  addImage("images/" +imageNames[index].fileName,index);
+  addImage(imageNames[index]);
 
   var indexTwo = Math.floor(Math.random() * imageNames.length);
   while (index == indexTwo) {
     indexTwo = Math.floor(Math.random() * imageNames.length)
   }
-  addImage("images/" +imageNames[indexTwo].fileName,indexTwo);
+  addImage(imageNames[indexTwo]);
 
   var indexThree = Math.floor(Math.random() * imageNames.length);
   while (indexTwo == indexThree || index == indexThree) {
     indexThree = Math.floor(Math.random() * imageNames.length);
   }
-  addImage("images/" +imageNames[indexThree].fileName,indexThree);
+  addImage(imageNames[indexThree]);
 }
 
 //recording click
+var clickAmount = 0;
 function recordClick(event) {
   var imageSource = event.target.src;
+  var imageSourceSplit = imageSource.split("images/")[1];
+  console.log(imageSourceSplit)
   for (var index = 0; index < imageNames.length; index++){
-    if (imageSource.indexOf(imageNames[index].imageSource) >=0) {
-      imageNames[index].tally++;
+    if (imageSourceSplit == imageNames[index].source){
+      imageNames[index].voteCounter();
     }
   }
-   console.log("Image Clicked!" +imageSource);
-   console.log(imageNames[event.target.dataset.index]);
-}
-
-//checking number of votes and notifying after 15 clicks of score
-function imageReload() {
-  setLimit (function) {
-    if (reloadCounter < imageNames.length) {
-      showImages();
-      reloadCounter++;
-    } else {
-      document.getElementById("image-container").innerHTML = "";
-      document.getElementById()
-    }
+  clickAmount+=1;
+  document.getElementById("image-container").innerHTML = "";
+  // showImages();
+  console.log("Image Clicked!" +imageSource);
+  if(clickAmount < 15) {
+    showImages();
+  } else {
+    showChart.render();
   }
 }
+var showChart = new CanvasJS.Chart("chartContainer", {
+  animationEnabled: true,
+  theme: "theme3",
+  title:{
+    text: "Voting Results Chart"
+  },
+  data: [
+    {
+      type: "column",
+      dataPoints: imageNames
+    }
+  ]
+});
 
 window.addEventListener("load", showImages);
-// window.addEventListener("load"),showChart);
