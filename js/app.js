@@ -5,7 +5,7 @@ var ImageOption = function(fileName, source) {
   this.label = fileName;
   this.voteCounter = function() {
     this.y++;
-  }
+  };
 };
 
 imageNames = [];
@@ -40,7 +40,7 @@ function showImages() {
 
   var indexTwo = Math.floor(Math.random() * imageNames.length);
   while (index == indexTwo) {
-    indexTwo = Math.floor(Math.random() * imageNames.length)
+    indexTwo = Math.floor(Math.random() * imageNames.length);
   }
   addImage(imageNames[indexTwo]);
 
@@ -56,7 +56,7 @@ var clickAmount = 0;
 function recordClick(event) {
   var imageSource = event.target.src;
   var imageSourceSplit = imageSource.split("images/")[1];
-  console.log(imageSourceSplit)
+  console.log(imageSourceSplit);
   for (var index = 0; index < imageNames.length; index++){
     if (imageSourceSplit == imageNames[index].source){
       imageNames[index].voteCounter();
@@ -64,14 +64,25 @@ function recordClick(event) {
   }
   clickAmount+=1;
   document.getElementById("image-container").innerHTML = "";
+
   // showImages();
   console.log("Image Clicked!" +imageSource);
   if(clickAmount < 15) {
     showImages();
   } else {
     showChart.render();
+    document.getElementById("chartContainer").style.visibility = "visible";
   }
 }
+
+//add button to page
+function votingButton() {
+  document.getElementById("chartContainer").style.visibility = "hidden";
+  clickAmount = 0;
+  showImages();
+}
+
+
 var showChart = new CanvasJS.Chart("chartContainer", {
   animationEnabled: true,
   theme: "theme3",
@@ -87,3 +98,4 @@ var showChart = new CanvasJS.Chart("chartContainer", {
 });
 
 window.addEventListener("load", showImages);
+document.getElementById("buttonId").addEventListener("click", votingButton);
