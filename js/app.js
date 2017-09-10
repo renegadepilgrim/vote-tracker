@@ -56,7 +56,6 @@ var clickAmount = 0;
 function recordClick(event) {
   var imageSource = event.target.src;
   var imageSourceSplit = imageSource.split("images/")[1];
-  console.log(imageSourceSplit);
   for (var index = 0; index < imageNames.length; index++){
     if (imageSourceSplit == imageNames[index].source){
       imageNames[index].voteCounter();
@@ -66,19 +65,22 @@ function recordClick(event) {
   document.getElementById("image-container").innerHTML = "";
 
   // showImages();
-  console.log("Image Clicked!" +imageSource);
   if(clickAmount < 15) {
     showImages();
   } else {
     showChart.render();
     document.getElementById("chartContainer").style.visibility = "visible";
+    document.getElementById("buttonId").style.visibility= "visible";
   }
+    document.getElementById("progressBar").setAttribute("value",clickAmount);
 }
 
 //add button to page
 function votingButton() {
-  document.getElementById("chartContainer").style.visibility = "hidden";
   clickAmount = 0;
+  document.getElementById("chartContainer").style.visibility = "hidden";
+  document.getElementById("progressBar").setAttribute("value",clickAmount);
+  document.getElementById("buttonId").style.visibility = "hidden";
   showImages();
 }
 
