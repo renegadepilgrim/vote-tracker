@@ -3,9 +3,6 @@ var ImageOption = function(fileName, source) {
   this.source = source;
   this.y = 0;
   this.label = fileName;
-  this.voteCounter = function() {
-    this.y++;
-  };
 };
 
 imageNames = [];
@@ -58,7 +55,7 @@ function recordClick(event) {
   var imageSourceSplit = imageSource.split("images/")[1];
   for (var index = 0; index < imageNames.length; index++){
     if (imageSourceSplit == imageNames[index].source){
-      imageNames[index].voteCounter();
+      imageNames[index].y++;
     }
   }
   clickAmount+=1;
@@ -73,6 +70,7 @@ function recordClick(event) {
     document.getElementById("buttonId").style.visibility= "visible";
   }
     document.getElementById("progressBar").setAttribute("value",clickAmount);
+    localStorage.setItem("imageData", JSON.stringify(imageNames));
 }
 
 //add button to page
@@ -81,6 +79,14 @@ function votingButton() {
   document.getElementById("chartContainer").style.visibility = "hidden";
   document.getElementById("progressBar").setAttribute("value",clickAmount);
   document.getElementById("buttonId").style.visibility = "hidden";
+  showImages();
+}
+
+function loadData() {
+  if (localStorage.getItem("imageData") != null) {
+    imageNames.JSON.parse(localStorage.getItem("imageData"));
+    showChart.options.data[0].dataPoints = imageNames;
+  }
   showImages();
 }
 
@@ -99,5 +105,5 @@ var showChart = new CanvasJS.Chart("chartContainer", {
   ]
 });
 
-window.addEventListener("load", showImages);
+window.addEventListener("load", loadData);
 document.getElementById("buttonId").addEventListener("click", votingButton);
