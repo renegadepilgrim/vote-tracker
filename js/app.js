@@ -3,9 +3,6 @@ var ImageOption = function(fileName, source) {
   this.source = source;
   this.y = 0;
   this.label = fileName;
-  this.voteCounter = function() {
-    this.y++;
-  };
 };
 
 imageNames = [];
@@ -56,32 +53,41 @@ var clickAmount = 0;
 function recordClick(event) {
   var imageSource = event.target.src;
   var imageSourceSplit = imageSource.split("images/")[1];
-  console.log(imageSourceSplit);
-  for (var index = 0; index < imageNames.length; index++){
-    if (imageSourceSplit == imageNames[index].source){
-      imageNames[index].voteCounter();
+  for (var index = 0; index < imageNames.length; index++) {
+    if (imageSourceSplit == imageNames[index].source) {
+      imageNames[index].y++;
     }
   }
   clickAmount+=1;
   document.getElementById("image-container").innerHTML = "";
-
-  // showImages();
-  console.log("Image Clicked!" +imageSource);
+// refresh to show new images
   if(clickAmount < 15) {
     showImages();
   } else {
     showChart.render();
     document.getElementById("chartContainer").style.visibility = "visible";
+    document.getElementById("buttonId").style.visibility = "visible";
   }
+  document.getElementById("progressBar").setAttribute("value", clickAmount);
+  localStorage.setItem("imageData", JSON.stringify(imageNames));
 }
 
 //add button to page
 function votingButton() {
-  document.getElementById("chartContainer").style.visibility = "hidden";
   clickAmount = 0;
+  document.getElementById("chartContainer").style.visibility = "hidden";
+  document.getElementById("progressBar").setAttribute("value",clickAmount);
+  document.getElementById("buttonId").style.visibility = "hidden";
   showImages();
 }
 
+function loadData() {
+  if(localStorage.getItem("imageData") != null) {
+    imageNames = JSON.parse(localStorage.getItem("imageData"));
+    showChart.options.data[0].dataPoints = imageNames;
+  }
+  showImages();
+}
 
 var showChart = new CanvasJS.Chart("chartContainer", {
   animationEnabled: true,
@@ -97,5 +103,5 @@ var showChart = new CanvasJS.Chart("chartContainer", {
   ]
 });
 
-window.addEventListener("load", showImages);
+window.addEventListener("load", loadData);
 document.getElementById("buttonId").addEventListener("click", votingButton);
